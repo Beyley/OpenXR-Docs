@@ -261,6 +261,10 @@ maintained in the default branch of the Khronos OpenXR GitHub project.
         <type category="define">
 #define <name>XR_BODY_JOINT_WITHOUT_ARM_COUNT_BD</name> 16</type>
 
+        <!-- XR_MNDX_haptic_force_feedback -->
+        <type category="define">
+#define <name>XR_MAX_HAPTIC_FORCE_FEEDBACK_ZONES_MNDX</name> 64</type>
+
         <!-- XR_MSFT_controller_model -->
         <type category="define">
 #define <name>XR_NULL_CONTROLLER_MODEL_KEY_MSFT</name> 0</type>
@@ -3598,6 +3602,31 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
         <type category="struct" name="XrForceFeedbackCurlApplyLocationMNDX">
             <member><type>XrForceFeedbackCurlLocationMNDX</type> <name>location</name></member>
             <member><type>float</type>                           <name>value</name></member>
+        </type>
+
+        <!-- XR_MNDX_haptic_force_feedback -->
+        <type category="struct" name="XrHapticForceFeedbackConstantMNDX" parentstruct="XrHapticBaseHeader">
+            <member values="XR_TYPE_HAPTIC_FORCE_FEEDBACK_CONSTANT_MNDX"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                       <name>next</name></member>
+            <member><type>uint32_t</type>                    <name>numZones</name></member>
+            <member len="numZones">const <type>float</type>* <name>zoneForces</name></member>
+        </type>
+
+        <type category="struct" name="XrHapticForceFeedbackWeaponMNDX" parentstruct="XrHapticBaseHeader">
+            <member values="XR_TYPE_HAPTIC_FORCE_FEEDBACK_WEAPON_MNDX"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>* <name>next</name></member>
+            <member><type>float</type> <name>start</name></member>
+            <member><type>float</type> <name>end</name></member>
+            <member><type>float</type> <name>strength</name></member>
+            <member><type>float</type> <name>kickBack</name></member>
+        </type>
+
+        <type category="struct" name="XrHapticForceFeedbackVibrationMNDX" parentstruct="XrHapticBaseHeader">
+            <member values="XR_TYPE_HAPTIC_FORCE_FEEDBACK_VIBRATION_MNDX"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                       <name>next</name></member>
+            <member><type>uint32_t</type>                    <name>numZones</name></member>
+            <member len="numZones">const <type>float</type>* <name>zoneFrequencies</name></member>
+            <member len="numZones">const <type>float</type>* <name>zoneAmplitudes</name></member>
         </type>
 
         <!-- XR_EXT_plane_detection -->
@@ -14295,10 +14324,18 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
         </require>
     </extension>
 
-    <extension name="XR_MNDX_extension_377" number="377" type="instance" supported="disabled">
+    <extension name="XR_MNDX_haptic_force_feedback" number="377" type="instance" supported="openxr" depends="XR_VERSION_1_0">
         <require>
-            <enum value="1"                                 name="XR_MNDX_extension_377_SPEC_VERSION"/>
-            <enum value="&quot;XR_MNDX_extension_377&quot;" name="XR_MNDX_extension_377_EXTENSION_NAME"/>
+            <enum value="1"                                 name="XR_MNDX_haptic_force_feedback_SPEC_VERSION"/>
+            <enum value="&quot;XR_MNDX_haptic_force_feedback&quot;" name="XR_MNDX_HAPTIC_FORCE_FEEDBACK_EXTENSION_NAME"/>
+
+            <type name="XrHapticForceFeedbackConstantMNDX"/>
+            <type name="XrHapticForceFeedbackWeaponMNDX"/>
+            <type name="XrHapticForceFeedbackVibrationMNDX"/>
+        
+            <enum offset="0" extends="XrStructureType" name="XR_TYPE_HAPTIC_FORCE_FEEDBACK_CONSTANT_MNDX"/>
+            <enum offset="1" extends="XrStructureType" name="XR_TYPE_HAPTIC_FORCE_FEEDBACK_WEAPON_MNDX"/>
+            <enum offset="2" extends="XrStructureType" name="XR_TYPE_HAPTIC_FORCE_FEEDBACK_VIBRATION_MNDX"/>
         </require>
     </extension>
 

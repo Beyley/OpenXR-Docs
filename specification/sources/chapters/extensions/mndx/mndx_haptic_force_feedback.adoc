@@ -1,0 +1,128 @@
+// Copyright (c) 2025, Beyley Cardellio
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+include::{generated}/meta/XR_MNDX_force_feedback_curl.adoc[]
+
+*Last Modified Date*::
+    2025-05-01
+
+*IP Status*::
+    No known IP claims.
+
+*Contributors*::
+    Beyley Cardellio +
+
+
+*Overview*
+
+This extension provides APIs for force feedback capable of restricting 
+movement along a linear actuation such as a trigger or finger curl.
+
+The intended use for this extension is to provide practical force 
+feedback functionality for force-feedback controllers and VR gloves.
+
+The term "linear actuator" in this extension is used as a catch-all for devices such as 
+controller triggers, or of a finger curling.
+
+*New Object Types*
+
+*New Flag Types*
+
+*New Enum Constants*
+
+elink:XrStructureType enumeration is extended with:
+
+* ename:XR_TYPE_HAPTIC_FORCE_FEEDBACK_CONSTANT_MNDX
+* ename:XR_TYPE_HAPTIC_FORCE_FEEDBACK_WEAPON_MNDX
+* ename:XR_TYPE_HAPTIC_FORCE_FEEDBACK_VIBRATION_MNDX
+
+*New Enums*
+
+*New Structures*
+
+[open,refpage='XrHapticForceFeedbackConstantMNDX',type='structs',desc='Structure for defining constant force feedback at each zone',xrefs='XrHapticBaseHeader xrApplyHapticFeedback']
+--
+
+The slink:XrHapticForceFeedbackConstantMNDX structure is defined as:
+
+include::{generated}/api/structs/XrHapticForceFeedbackConstantMNDX.adoc[]
+
+.Member Descriptions
+****
+* pname:type is the elink:XrStructureType of this structure.
+* pname:next is code:NULL or a pointer to the next structure in a structure
+  chain.
+* pname:numZones indicates the amount of haptic zones the application is passing in, 
+  with a maximum length of ename:XR_MAX_HAPTIC_FORCE_FEEDBACK_ZONES_MNDX.
+* pname:zoneForces is a pointer to the forces to apply when the linear actuator is inside of each zone. 
+  Each force value has it's normal range defined as `0.0` through `1.0`. 
+  Runtimes must: accept values above `1.0`, but may: clamp the value to `1.0` if the hardware does not support a force stronger than 6lbf.
+  The force that should be required to move through the zone can be calculated as such: 
+  `(pname:zoneForces[n] / pname:numZones) * 6lbf`. If hardware supports a force stronger than 6lbf, 
+  then the runtime should: have `1.0` be derived from 6lbf, 
+  and numbers higher than `1.0` should: be defined based on a linear multiple of 6lbf. 
+  For example, zone force of `2.0`, the equation should be filled in as such: `(2.0 / pname:numZones) * 6lbf`.
+  If a device does not support applying 6lbf of feedback, the runtime should: replace 6lbf in the equations 
+  with the maximum feedback force it is capable of applying. For example, a device which is only able to 
+  provide 4lbf of force should fill in the equation as such: `(pname:zoneForces[n] / pname:numZones) * 4lbf`.
+****
+
+include::{generated}/validity/structs/XrHapticForceFeedbackConstantMNDX.adoc[]
+--
+
+[open,refpage='XrHapticForceFeedbackWeaponMNDX',type='structs',desc='Structure for defining a feedback pattern similar to the trigger of a weapon, or the pull string of a bow',xrefs='XrHapticBaseHeader xrApplyHapticFeedback']
+--
+
+The slink:XrHapticForceFeedbackWeaponMNDX structure is defined as:
+
+include::{generated}/api/structs/XrHapticForceFeedbackWeaponMNDX.adoc[]
+
+.Member Descriptions
+****
+* pname:type is the elink:XrStructureType of this structure.
+* pname:next is code:NULL or a pointer to the next structure in a structure
+  chain.
+* pname:start is the position of the linear actuator at which force feedback should start.
+* pname:end is the position of the linear actuator at which force feedback should end, 
+  allowing the user to move the trigger unrestricted from pname:end to the farthest position of the linear actuator.
+* pname:strength is a value from `0.0` to `1.0` specifying how strong the feedback should be. 
+  The amount of force required to move the linear actuator from pname:start to pname:end is defined as `pname:strength * 6lbf`. 
+  If the hardware is unable to apply 6lbf, `1.0` should be the maximum force the hardware is capable of applying. 
+  Runtimes must: accept values greater than `1.0`, but may: clamp the force to the strongest force it is capable of applying.
+* pname:kickBack is a value from `0.0` to `1.0` specifying how strong the kickback upon release should be.
+  This kick back may: apply at any point within the linear actuator's return motion. This is defined as the same algorithm as pname:strength.
+****
+
+include::{generated}/validity/structs/XrHapticForceFeedbackWeaponMNDX.adoc[]
+--
+
+[open,refpage='XrHapticForceFeedbackVibrationMNDX',type='structs',desc='Structure for defining a vibration feedback triggered by movement of a linear actuator',xrefs='XrHapticBaseHeader xrApplyHapticFeedback']
+--
+
+The slink:XrHapticForceFeedbackVibrationMNDX structure is defined as:
+
+include::{generated}/api/structs/XrHapticForceFeedbackVibrationMNDX.adoc[]
+
+.Member Descriptions
+****
+* pname:type is the elink:XrStructureType of this structure.
+* pname:next is code:NULL or a pointer to the next structure in a structure
+  chain.
+* pname:numZones indicates the amount of haptic zones the application is passing in, 
+  with a maximum length of ename:XR_MAX_HAPTIC_FORCE_FEEDBACK_ZONES_MNDX.
+* pname:zoneFrequencies defines the frequency of the vibration at each zone. This follows the same logic as `XrHapticVibration.frequency`.
+* pname:zoneAmplitudes defines the amplitude of the vibration at each zone. This follows the same logic as `XrHapticVibration.amplitude`.
+****
+
+include::{generated}/validity/structs/XrHapticForceFeedbackVibrationMNDX.adoc[]
+--
+
+*New Functions*
+
+*Issues*
+
+*Version History*
+
+* Revision 1, 2025-05-01 (Beyley Cardellio)
+** Initial version
