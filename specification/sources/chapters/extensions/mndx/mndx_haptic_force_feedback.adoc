@@ -2,10 +2,10 @@
 //
 // SPDX-License-Identifier: CC-BY-4.0
 
-include::{generated}/meta/XR_MNDX_force_feedback_curl.adoc[]
+include::{generated}/meta/XR_MNDX_haptic_force_feedback.adoc[]
 
 *Last Modified Date*::
-    2025-05-01
+    2025-05-10
 
 *IP Status*::
     No known IP claims.
@@ -17,13 +17,13 @@ include::{generated}/meta/XR_MNDX_force_feedback_curl.adoc[]
 *Overview*
 
 This extension provides APIs for force feedback capable of restricting 
-movement along a linear actuation such as a trigger or finger curl.
-
+movement along a linear actuation such as a trigger or finger curl. 
 The intended use for this extension is to provide practical force 
 feedback functionality for force-feedback controllers and VR gloves.
-
 The term "linear actuator" in this extension is used as a catch-all for devices such as 
 controller triggers, or of a finger curling.
+
+No valid force feedback haptic sources are defined in this extension.
 
 *New Object Types*
 
@@ -36,6 +36,7 @@ elink:XrStructureType enumeration is extended with:
 * ename:XR_TYPE_HAPTIC_FORCE_FEEDBACK_CONSTANT_MNDX
 * ename:XR_TYPE_HAPTIC_FORCE_FEEDBACK_WEAPON_MNDX
 * ename:XR_TYPE_HAPTIC_FORCE_FEEDBACK_VIBRATION_MNDX
+* ename:XR_TYPE_ACTION_STATE_FORCE_FEEDBACK_ZONE_MNDX
 
 *New Enums*
 
@@ -118,7 +119,66 @@ include::{generated}/api/structs/XrHapticForceFeedbackVibrationMNDX.adoc[]
 include::{generated}/validity/structs/XrHapticForceFeedbackVibrationMNDX.adoc[]
 --
 
+[open,refpage='XrActionStateForceFeedbackZoneMNDX',type='structs',desc='Structure for retrieving which zone is active on a haptic force feedback output',xrefs='xrApplyHapticFeedback']
+--
+
+The slink:XrActionStateForceFeedbackZoneMNDX structure is defined as:
+
+include::{generated}/api/structs/XrActionStateForceFeedbackZoneMNDX.adoc[]
+
+.Member Descriptions
+****
+* pname:type is the elink:XrStructureType of this structure.
+* pname:next is code:NULL or a pointer to the next structure in a structure
+  chain.
+* pname:currentZone is the zone that is currently active for the action. 
+  This number's meaning depends on the last active force feedback type. 
+  For slink:XrHapticForceFeedbackConstantMNDX, this number is the zone that is currently active, 
+  this zone is in the range defined by the application when it applied the haptic vibration. 
+  For slink:XrHapticForceFeedbackWeaponMNDX, the returned zone is `0` for before the weapon force feedback 
+  is triggered (eg. within the device-interpolated zones between `0.0` and `pname:start`), 
+  `1` for during the force feedback's resistance (eg. within the device-interpolated zones 
+  between `pname:start` and `pname:end`), and `2` for after the force feedback's resistance 
+  (eg. within the device-interpolated zones between `pname:end` and `1.0`). Due to the unknown 
+  nature of when the pname:kickBack force may be applied (and due to it may be being applied instantaneously), 
+  the kick-back force is not considered a discrete zone.
+  For slink:XrHapticForceFeedbackVibrationMNDX, this number is the zone that is currently active, 
+  this zone is in the range defined by the application when it applied the haptic vibration. 
+  If no force feedback vibration effect is currently active, this must: return -1.
+* pname:changedSinceLastSync is ename:XR_TRUE if the value of
+  pname:currentState is different than it was before the most recent call to
+  flink:xrSyncActions.
+* pname:lastChangeTime is the basetype:XrTime associated with the most
+  recent change to this action's state.
+* pname:isActive is ename:XR_TRUE if and only if there exists an input
+  source that is contributing to the current state of this action.
+****
+
+include::{generated}/validity/structs/XrActionStateForceFeedbackZoneMNDX.adoc[]
+--
+
 *New Functions*
+
+[open,refpage='xrGetActionStateForceFeedbackZoneMNDX',type='protos',desc='Gets the currently active force feedback zone']
+--
+include::{generated}/api/protos/xrGetActionStateForceFeedbackZoneMNDX.adoc[]
+
+.Parameter Descriptions
+****
+* pname:session is the slink:XrSession to query.
+* pname:getInfo is a pointer to slink:XrActionStateGetInfo to provide action and subaction paths information.
+* pname:state is a pointer to a valid slink:XrActionStateBoolean into which the state will be placed.
+****
+
+When this extension is enabled, and a valid force feedback haptic source is bound, 
+but the underlying device does not support haptic feedback, the runtime must: 
+emulate the result of flink:xrGetActionStateForceFeedbackZoneMNDX, 
+even if no force feedback hardware is in use. This allows applications to rely 
+on the resulting zone to trigger actions such as a weapon firing.
+
+include::{generated}/validity/protos/xrGetActionStateForceFeedbackZoneMNDX.adoc[]
+
+--
 
 *Issues*
 

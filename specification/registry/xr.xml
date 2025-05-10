@@ -3629,6 +3629,15 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
             <member len="numZones">const <type>float</type>* <name>zoneAmplitudes</name></member>
         </type>
 
+        <type category="struct" name="XrActionStateForceFeedbackZoneMNDX">
+            <member values="XR_TYPE_ACTION_STATE_FORCE_FEEDBACK_ZONE_MNDX"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                       <name>next</name></member>
+            <member><type>int64_t</type>                     <name>currentZone</name></member>
+            <member><type>XrBool32</type>                    <name>changedSinceLastSync</name></member>
+            <member><type>XrTime</type>                      <name>lastChangeTime</name></member>
+            <member><type>XrBool32</type>                    <name>isActive</name></member>
+        </type>
+
         <!-- XR_EXT_plane_detection -->
         <type category="struct" name="XrSystemPlaneDetectionPropertiesEXT" returnedonly="true" structextends="XrSystemProperties">
             <member values="XR_TYPE_SYSTEM_PLANE_DETECTION_PROPERTIES_EXT"><type>XrStructureType</type> <name>type</name></member>
@@ -7755,6 +7764,14 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
             <proto><type>XrResult</type> <name>xrApplyForceFeedbackCurlMNDX</name></proto>
             <param><type>XrHandTrackerEXT</type> <name>handTracker</name></param>
             <param>const <type>XrForceFeedbackCurlApplyLocationsMNDX</type>* <name>locations</name></param>
+        </command>
+
+        <!-- commands for XR_MNDX_haptic_force_feedback -->
+        <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_PATH_UNSUPPORTED,XR_ERROR_PATH_INVALID,XR_ERROR_ACTION_TYPE_MISMATCH,XR_ERROR_ACTIONSET_NOT_ATTACHED">
+            <proto><type>XrResult</type> <name>xrGetActionStateForceFeedbackZoneMNDX</name></proto>
+            <param><type>XrSession</type> <name>session</name></param>
+            <param>const <type>XrActionStateGetInfo</type>* <name>getInfo</name></param>
+            <param><type>XrActionStateBoolean</type>* <name>state</name></param>
         </command>
 
         <!-- XR_EXT_plane_detection -->
@@ -14329,13 +14346,17 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
             <enum value="1"                                 name="XR_MNDX_haptic_force_feedback_SPEC_VERSION"/>
             <enum value="&quot;XR_MNDX_haptic_force_feedback&quot;" name="XR_MNDX_HAPTIC_FORCE_FEEDBACK_EXTENSION_NAME"/>
 
+            <command name="xrGetActionStateForceFeedbackZoneMNDX"/>
+
             <type name="XrHapticForceFeedbackConstantMNDX"/>
             <type name="XrHapticForceFeedbackWeaponMNDX"/>
             <type name="XrHapticForceFeedbackVibrationMNDX"/>
+            <type name="XrActionStateForceFeedbackZoneMNDX"/>
         
             <enum offset="0" extends="XrStructureType" name="XR_TYPE_HAPTIC_FORCE_FEEDBACK_CONSTANT_MNDX"/>
             <enum offset="1" extends="XrStructureType" name="XR_TYPE_HAPTIC_FORCE_FEEDBACK_WEAPON_MNDX"/>
             <enum offset="2" extends="XrStructureType" name="XR_TYPE_HAPTIC_FORCE_FEEDBACK_VIBRATION_MNDX"/>
+            <enum offset="3" extends="XrStructureType" name="XR_TYPE_ACTION_STATE_FORCE_FEEDBACK_ZONE_MNDX" />
         </require>
     </extension>
 
