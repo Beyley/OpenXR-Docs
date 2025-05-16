@@ -14345,9 +14345,11 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
         <require>
             <enum value="1"                                 name="XR_MNDX_haptic_force_feedback_SPEC_VERSION"/>
             <enum value="&quot;XR_MNDX_haptic_force_feedback&quot;" name="XR_MNDX_HAPTIC_FORCE_FEEDBACK_EXTENSION_NAME"/>
+            <enum offset="0" extends="XrActionType"         name="XR_ACTION_TYPE_FORCE_FEEDBACK_OUTPUT_MNDX"/>
 
             <command name="xrGetActionStateForceFeedbackZoneMNDX"/>
 
+            <type name="XR_MAX_HAPTIC_FORCE_FEEDBACK_ZONES_MNDX"/>
             <type name="XrHapticForceFeedbackConstantMNDX"/>
             <type name="XrHapticForceFeedbackWeaponMNDX"/>
             <type name="XrHapticForceFeedbackVibrationMNDX"/>
