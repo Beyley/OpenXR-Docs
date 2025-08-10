@@ -585,6 +585,10 @@ maintained in the default branch of the Khronos OpenXR GitHub project.
         <type category="handle" parent="XrSenseDataProviderBD"><type>XR_DEFINE_HANDLE</type>(<name>XrSenseDataSnapshotBD</name>)</type>
         <type category="handle" parent="XrSenseDataProviderBD"><type>XR_DEFINE_HANDLE</type>(<name>XrAnchorBD</name>)</type>
 
+        <!-- XR_MND_device_enumeration -->
+        <type category="basetype"><type>XR_DEFINE_ATOM</type>(<name>XrDeviceIdMND</name>)</type>
+        <type category="handle" parent="XrSession"><type>XR_DEFINE_HANDLE</type>(<name>XrDeviceListMND</name>)</type>
+
 
         <!-- Non-handle 64-bit opaque type from XR_EXT_future -->
         <type category="basetype"><type>XR_DEFINE_OPAQUE_64</type>(<name>XrFutureEXT</name>)</type>
@@ -877,6 +881,9 @@ maintained in the default branch of the Khronos OpenXR GitHub project.
         <!-- enums for XR_EXT_spatial_marker_tracking -->
         <type name="XrSpatialMarkerArucoDictEXT" category="enum"/>
         <type name="XrSpatialMarkerAprilTagDictEXT" category="enum"/>
+
+        <!-- enums for XR_MND_device_enumeration -->
+        <type name="XrDeviceTypeMND" category="enum"/>
 
         <!-- Struct types -->
         <type category="struct" name="XrVector2f">
@@ -5416,6 +5423,70 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
             <member len="markerCount"><type>XrSpatialMarkerDataEXT</type>* <name>markers</name></member>
         </type>
 
+        <!-- XR_MND_device_enumeration -->
+        <type category="struct" name="XrSystemDeviceEnumerationPropertiesMND" returnedonly="true" structextends="XrSystemProperties">
+            <member values="XR_TYPE_SYSTEM_DEVICE_ENUMERATION_PROPERTIES_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                                                                     <name>next</name></member>
+            <member><type>XrBool32</type>                                                                  <name>supportsDeviceEnumeration</name></member>
+        </type>
+        <type category="struct" name="XrEventDataDeviceListUpdatedMND" parentstruct="XrEventDataBaseHeader" returnedonly="true">
+            <member values="XR_TYPE_EVENT_DATA_DEVICE_LIST_UPDATED_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                                                               <name>next</name></member>
+            <member><type>XrSession</type>                                                           <name>session</name></member>
+        </type>
+        <type category="struct" name="XrCreateDeviceListInfoMND">
+            <member values="XR_TYPE_CREATE_DEVICE_LIST_INFO_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member>const <type>void</type>*                                                  <name>next</name></member>
+        </type>
+        <type category="struct" name="XrGetDevicePropertiesInfoMND">
+            <member values="XR_TYPE_GET_DEVICE_PROPERTIES_INFO_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member>const <type>void</type>*                                                     <name>next</name></member>
+            <member><type>XrDeviceIdMND</type>                                                   <name>id</name></member>
+        </type>
+        <type category="struct" name="XrDevicePropertiesMND" returnedonly="true">
+            <member values="XR_TYPE_DEVICE_PROPERTIES_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                                                  <name>next</name></member>
+            <member><type>char</type>                                                   <name>name</name>[256]</member>
+            <member><type>char</type>                                                   <name>serial</name>[256]</member>
+            <member><type>XrDeviceTypeMND</type>                                        <name>deviceType</name></member>
+        </type>
+
+        <!-- XR_MND_device_enumeration_tracked_space -->
+        <type category="struct" name="XrCreateDeviceTrackedSpaceInfoMND">
+            <member values="XR_TYPE_CREATE_DEVICE_TRACKED_SPACE_INFO_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member>const <type>void</type>*                                                           <name>next</name></member>
+            <member><type>XrDeviceListMND</type>                                                       <name>deviceList</name></member>
+            <member><type>XrDeviceIdMND</type>                                                         <name>deviceId</name></member>
+            <member><type>XrPosef</type>                                                               <name>offset</name></member>
+        </type>
+        <type category="struct" name="XrDeviceTrackedSpacePropertiesMND" returnedonly="true" structextends="XrDevicePropertiesMND">
+            <member values="XR_TYPE_DEVICE_TRACKED_SPACE_PROPERTIES_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                                                                <name>next</name></member>
+            <member><type>XrBool32</type>                                                             <name>supportsTrackedSpace</name></member>
+        </type>
+
+        <!-- XR_MND_device_enumeration_battery_info -->
+        <type category="struct" name="XrDeviceBatteryInfoPropertiesMND">
+            <member values="XR_TYPE_DEVICE_BATTERY_INFO_PROPERTIES_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member>const <type>void</type>*                                                         <name>next</name></member>
+            <member><type>XrBool32</type>                                                            <name>supportsBatteryInfo</name></member>
+        </type>
+        <type category="struct" name="XrGetDeviceBatteryInfoMND">
+            <member values="XR_TYPE_GET_DEVICE_BATTERY_INFO_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                                                        <name>next</name></member>
+            <member><type>XrDeviceListMND</type>                                              <name>deviceList</name></member>
+            <member><type>XrDeviceIdMND</type>                                                <name>deviceId</name></member>
+        </type>
+        <type category="struct" name="XrDeviceBatteryInfoMND" returnedonly="true">
+            <member values="XR_TYPE_DEVICE_BATTERY_INFO_MND"><type>XrStructureType</type> <name>type</name></member>
+            <member><type>void</type>*                                                    <name>next</name></member>
+            <member><type>XrBool32</type>                                                 <name>chargingStatusPresent</name></member>
+            <member><type>XrBool32</type>                                                 <name>charging</name></member>
+            <member><type>XrBool32</type>                                                 <name>chargeLevelPresent</name></member>
+            <member><type>float</type>                                                    <name>chargeLevel</name></member>
+            <member><type>XrBool32</type>                                                 <name>batteryLow</name></member>
+        </type>
+
     </types>
 
 
@@ -7229,6 +7300,24 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
         <enum value="1"   name="XR_WORLD_MESH_BLOCK_RESULT_FAILED_ML"         comment="Mesh request has failed."/>
         <enum value="2"   name="XR_WORLD_MESH_BLOCK_RESULT_PENDING_ML"        comment="Mesh request is pending."/>
         <enum value="3"   name="XR_WORLD_MESH_BLOCK_RESULT_PARTIAL_UPDATE_ML" comment="There are partial updates on the mesh request."/>
+    </enums>
+
+    <!-- XR_MND_device_enumeration -->
+    <enums name="XrDeviceTypeMND" type="enum">
+        <enum value="0"  name="XR_DEVICE_TYPE_UNKNOWN_MND"                        comment="An unknown device, fallback when a device doesn't fit into an existing or enabled category."/>
+        <enum value="1"  name="XR_DEVICE_TYPE_ACTIVE_HEAD_MND"                    comment="A head device bound to the /user/head top level path."/>
+        <enum value="2"  name="XR_DEVICE_TYPE_INACTIVE_HEAD_MND"                  comment="A head device not bound to the /user/head top level path."/>
+        <enum value="3"  name="XR_DEVICE_TYPE_ACTIVE_RIGHT_HAND_CONTROLLER_MND"   comment="A controller bound to the /user/right top level path."/>
+        <enum value="4"  name="XR_DEVICE_TYPE_INACTIVE_RIGHT_HAND_CONTROLLER_MND" comment="A right-handed controller not bound to the /user/right top level path."/>
+        <enum value="5"  name="XR_DEVICE_TYPE_ACTIVE_LEFT_HAND_CONTROLLER_MND"    comment="A controller bound to the /user/left top level path."/>
+        <enum value="6"  name="XR_DEVICE_TYPE_INACTIVE_LEFT_HAND_CONTROLLER_MND"  comment="A left-handed controller not bound to the /user/right top level path."/>
+        <enum value="7"  name="XR_DEVICE_TYPE_INACTIVE_ANY_HAND_CONTROLLER_MND"   comment="A chirality-independent controller not bound to either /user/left or /user/right."/>
+        <enum value="8"  name="XR_DEVICE_TYPE_ACTIVE_GAMEPAD_MND"                 comment="A gamepad bound to the /user/gamepad top level path."/>
+        <enum value="9"  name="XR_DEVICE_TYPE_INACTIVE_GAMEPAD_MND"               comment="A gamepad not bound to the /user/gamepad top level path."/>
+        <enum value="10" name="XR_DEVICE_TYPE_ACTIVE_TREADMILL_MND"               comment="A treadmill bound to the /user/treadmill top level path."/>
+        <enum value="11" name="XR_DEVICE_TYPE_INACTIVE_TREADMILL_MND"             comment="A treadmill not bound to the /user/treadmill top level path."/>
+        <enum value="12" name="XR_DEVICE_TYPE_ACTIVE_EYE_TRACKER_EXT_MND"         comment="An eye tracker currently bound to the /user/eyes_ext top level path. Only available with EXT_eye_gaze_interaction"/>
+        <enum value="13" name="XR_DEVICE_TYPE_INACTIVE_EYE_TRACKER_EXT_MND"       comment="An eye tracker not bound to the /user/eyes_ext top level path. Only available with EXT_eye_gaze_interaction"/>
     </enums>
 
     <!-- SECTION: OpenXR command definitions -->
@@ -9966,7 +10055,6 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
             <param><type>XrFutureCompletionEXT</type>* <name>completion</name></param>
         </command>
 
-
         <!-- XR_META_simultaneous_hands_and_controllers commands -->
         <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_FEATURE_UNSUPPORTED">
             <proto><type>XrResult</type> <name>xrResumeSimultaneousHandsAndControllersTrackingMETA</name></proto>
@@ -9977,6 +10065,47 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
             <proto><type>XrResult</type> <name>xrPauseSimultaneousHandsAndControllersTrackingMETA</name></proto>
             <param><type>XrSession</type> <name>session</name></param>
             <param>const <type>XrSimultaneousHandsAndControllersTrackingPauseInfoMETA</type>* <name>pauseInfo</name></param>
+        </command>
+
+        <!-- XR_MND_device_enumeration commands -->
+        <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_FEATURE_UNSUPPORTED">
+            <proto><type>XrResult</type>                         <name>xrCreateDeviceListMND</name></proto>
+            <param><type>XrSession</type>                        <name>session</name></param>
+            <param>const <type>XrCreateDeviceListInfoMND</type>* <name>info</name></param>
+            <param><type>XrDeviceListMND</type>*                 <name>deviceList</name></param>
+        </command>
+        <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_FEATURE_UNSUPPORTED">
+            <proto><type>XrResult</type>                                                 <name>xrEnumerateDevicesMND</name></proto>
+            <param><type>XrDeviceListMND</type>                                          <name>deviceList</name></param>
+            <param optional="true"><type>uint32_t</type>                                 <name>deviceCapacityInput</name></param>
+            <param><type>uint32_t</type>*                                                <name>deviceCountOutput</name></param>
+            <param optional="true" len="deviceCapacityInput"><type>XrDeviceIdMND</type>* <name>devices</name></param>
+        </command>
+        <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_FEATURE_UNSUPPORTED">
+            <proto><type>XrResult</type>                            <name>xrGetDevicePropertiesMND</name></proto>
+            <param><type>XrDeviceListMND</type>                     <name>deviceList</name></param>
+            <param>const <type>XrGetDevicePropertiesInfoMND</type>* <name>info</name></param>
+            <param><type>XrDevicePropertiesMND</type>*              <name>properties</name></param>
+        </command>
+        <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_FEATURE_UNSUPPORTED">
+            <proto><type>XrResult</type>         <name>xrDestroyDeviceListMND</name></proto>
+            <param><type>XrDeviceListMND</type> <name>deviceList</name></param>
+        </command>
+
+        <!-- XR_MND_device_enumeration_tracked_space commands -->
+        <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_FEATURE_UNSUPPORTED">
+            <proto><type>XrResult</type>                                 <name>xrCreateDeviceTrackedSpaceMND</name></proto>
+            <param><type>XrSession</type>                                <name>session</name></param>
+            <param>const <type>XrCreateDeviceTrackedSpaceInfoMND</type>* <name>createInfo</name></param>
+            <param><type>XrSpace</type>*                                 <name>space</name></param>
+        </command>
+
+        <!-- XR_MND_device_enumeration_battery_info commands -->
+        <command successcodes="XR_SUCCESS,XR_SESSION_LOSS_PENDING" errorcodes="XR_ERROR_FUNCTION_UNSUPPORTED,XR_ERROR_VALIDATION_FAILURE,XR_ERROR_RUNTIME_FAILURE,XR_ERROR_HANDLE_INVALID,XR_ERROR_INSTANCE_LOST,XR_ERROR_SESSION_LOST,XR_ERROR_FEATURE_UNSUPPORTED">
+            <proto><type>XrResult</type>                                 <name>xrDeviceGetBatteryInfoMND</name></proto>
+            <param><type>XrSession</type>                                <name>session</name></param>
+            <param>const <type>XrGetDeviceBatteryInfoMND</type>*         <name>getInfo</name></param>
+            <param><type>XrDeviceBatteryInfoMND</type>*                  <name>batteryInfo</name></param>
         </command>
 
     </commands>
@@ -16741,24 +16870,65 @@ typedef XrResult (XRAPI_PTR *<name>PFN_xrCreateApiLayerInstance</name>)(
         </require>
     </extension>
 
-    <extension name="XR_MND_extension_446" number="446" type="instance" supported="disabled">
+    <extension name="XR_MND_device_enumeration" number="446" type="instance" supported="openxr">
         <require>
-            <enum value="1"                                name="XR_MND_extension_446_SPEC_VERSION"/>
-            <enum value="&quot;XR_MND_extension_446&quot;" name="XR_MND_EXTENSION_446_EXTENSION_NAME"/>
+            <enum value="1"                                     name="XR_MND_device_enumeration_SPEC_VERSION"/>
+            <enum value="&quot;XR_MND_device_enumeration&quot;" name="XR_MND_DEVICE_ENUMERATION_EXTENSION_NAME"/>
+
+            <enum offset="0" extends="XrStructureType" name="XR_TYPE_SYSTEM_DEVICE_ENUMERATION_PROPERTIES_MND"/>
+            <enum offset="1" extends="XrStructureType" name="XR_TYPE_EVENT_DATA_DEVICE_LIST_UPDATED_MND"/>
+            <enum offset="2" extends="XrStructureType" name="XR_TYPE_CREATE_DEVICE_LIST_INFO_MND"/>
+            <enum offset="3" extends="XrStructureType" name="XR_TYPE_GET_DEVICE_PROPERTIES_INFO_MND"/>
+            <enum offset="4" extends="XrStructureType" name="XR_TYPE_DEVICE_PROPERTIES_MND"/>
+
+            <type name="XrDeviceIdMND"/>
+            <type name="XrDeviceListMND"/>
+            <type name="XrDeviceTypeMND"/>
+
+            <type name="XrSystemDeviceEnumerationPropertiesMND"/>
+            <type name="XrEventDataDeviceListUpdatedMND"/>
+            <type name="XrCreateDeviceListInfoMND"/>
+            <type name="XrGetDevicePropertiesInfoMND"/>
+            <type name="XrDevicePropertiesMND"/>
+
+            <command name="xrCreateDeviceListMND"/>
+            <command name="xrEnumerateDevicesMND"/>
+            <command name="xrGetDevicePropertiesMND"/>
+            <command name="xrDestroyDeviceListMND"/>
         </require>
     </extension>
 
-    <extension name="XR_MND_extension_447" number="447" type="instance" supported="disabled">
+    <extension name="XR_MND_device_enumeration_tracked_space" number="447" type="instance" supported="openxr">
         <require>
-            <enum value="1"                                name="XR_MND_extension_447_SPEC_VERSION"/>
-            <enum value="&quot;XR_MND_extension_447&quot;" name="XR_MND_EXTENSION_447_EXTENSION_NAME"/>
+            <enum value="1"                                                   name="XR_MND_device_enumeration_tracked_space_SPEC_VERSION"/>
+            <enum value="&quot;XR_MND_device_enumeration_tracked_space&quot;" name="XR_MND_DEVICE_ENUMERATION_TRACKED_SPACE_EXTENSION_NAME"/>
+
+            <enum offset="0" extends="XrDeviceTypeMND" name="XR_DEVICE_TYPE_GENERIC_TRACKER_MND" comment="A generic tracking point, may be a virtual device, and not map to a physical object at all."/>
+
+            <enum offset="0" extends="XrStructureType" name="XR_TYPE_CREATE_DEVICE_TRACKED_SPACE_INFO_MND"/>
+            <enum offset="1" extends="XrStructureType" name="XR_TYPE_DEVICE_TRACKED_SPACE_PROPERTIES_MND"/>
+
+            <type name="XrCreateDeviceTrackedSpaceInfoMND"/>
+            <type name="XrDeviceTrackedSpacePropertiesMND"/>
+
+            <command name="xrCreateDeviceTrackedSpaceMND"/>
         </require>
     </extension>
 
-    <extension name="XR_MND_extension_448" number="448" type="instance" supported="disabled">
+    <extension name="XR_MND_device_enumeration_battery_info" number="448" type="instance" supported="openxr">
         <require>
-            <enum value="1"                                name="XR_MND_extension_448_SPEC_VERSION"/>
-            <enum value="&quot;XR_MND_extension_448&quot;" name="XR_MND_EXTENSION_448_EXTENSION_NAME"/>
+            <enum value="1"                                                  name="XR_MND_device_enumeration_battery_info_SPEC_VERSION"/>
+            <enum value="&quot;XR_MND_device_enumeration_battery_info&quot;" name="XR_MND_DEVICE_ENUMERATION_BATTERY_INFO_EXTENSION_NAME"/>
+            
+            <enum offset="0" extends="XrStructureType" name="XR_TYPE_DEVICE_BATTERY_INFO_PROPERTIES_MND"/>
+            <enum offset="1" extends="XrStructureType" name="XR_TYPE_GET_DEVICE_BATTERY_INFO_MND"/>
+            <enum offset="2" extends="XrStructureType" name="XR_TYPE_DEVICE_BATTERY_INFO_MND"/>
+            
+            <type name="XrDeviceBatteryInfoPropertiesMND"/>
+            <type name="XrGetDeviceBatteryInfoMND"/>
+            <type name="XrDeviceBatteryInfoMND"/>
+
+            <command name="xrDeviceGetBatteryInfoMND"/>
         </require>
     </extension>
 
